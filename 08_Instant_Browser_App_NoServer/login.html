@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — ExpenseTracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="brand-logo">
+                    <span class="logo-icon">💸</span>
+                    <h2>ExpenseTracker</h2>
+                </div>
+                <p class="auth-subtitle">Welcome back! Sign in to manage your personal finances.</p>
+            </div>
+
+            <div id="authAlert"></div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉️</span>
+                        <input type="email" id="email" placeholder="alex@example.com" required autofocus value="alex@example.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="password" placeholder="••••••••" required value="password123">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    <span>Sign In</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="register.html" class="auth-link">Create account</a></p>
+                <p style="margin-top: 0.75rem;">
+                    <a href="#" onclick="AppStorage.clearAllData(); alert('All stored data has been cleared! You have a completely clean slate.'); location.reload();" style="font-size: 0.78rem; color: #94a3b8; text-decoration: underline;">
+                        🗑️ Reset / Clear all saved data
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const res = AppStorage.login(email, password);
+            if (res.success) {
+                window.location.href = 'dashboard.html';
+            } else {
+                document.getElementById('authAlert').innerHTML = `
+                    <div class="alert alert-danger">
+                        <span class="alert-icon">⚠️</span>
+                        <span>${res.message}</span>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

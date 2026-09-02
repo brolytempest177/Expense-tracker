@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Dashboard — ExpenseTracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="app-body">
+    <div class="app-layout">
+        <!-- Mobile Header Bar -->
+        <div class="mobile-navbar">
+            <div class="brand-logo">
+                <span class="logo-icon">💸</span>
+                <span class="brand-name">ExpenseTracker</span>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuToggle">☰</button>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar" id="appSidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo">
+                    <span class="logo-icon">💸</span>
+                    <span class="brand-name">ExpenseTracker</span>
+                </div>
+                <span class="badge-tag badge-subtle">Demo</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="dashboard.html" class="nav-link active"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a></li>
+                    <li class="nav-item"><a href="expenses.html" class="nav-link"><span class="nav-icon">💳</span><span class="nav-label">Expenses</span></a></li>
+                    <li class="nav-item"><a href="add-expense.html" class="nav-link"><span class="nav-icon">➕</span><span class="nav-label">Add Expense</span></a></li>
+                    <li class="nav-item"><a href="budget.html" class="nav-link"><span class="nav-icon">🎯</span><span class="nav-label">Monthly Budget</span></a></li>
+                    <li class="nav-item"><a href="reports.html" class="nav-link"><span class="nav-icon">📈</span><span class="nav-label">Analytics & Reports</span></a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile-card">
+                    <div class="user-avatar" id="sidebarAvatar">A</div>
+                    <div class="user-details">
+                        <span class="user-name" id="sidebarUserName">Alex Johnson</span>
+                        <span class="user-email" id="sidebarUserEmail">demo@example.com</span>
+                    </div>
+                </div>
+                <a href="#" onclick="AppStorage.logout()" class="btn-logout"><span class="nav-icon">🚪</span><span class="nav-label">Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Financial Dashboard</h1>
+                    <p class="page-subtitle">Welcome back, <strong id="greetingName">Alex</strong>! Here is your live spending summary.</p>
+                </div>
+                <div class="header-actions">
+                    <a href="add-expense.html" class="btn btn-primary"><span class="btn-icon">➕</span><span>Add Expense</span></a>
+                </div>
+            </div>
+
+            <!-- KPI Summary Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card card-primary">
+                    <div class="kpi-icon-wrapper"><span class="kpi-icon">💸</span></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Total Spent This Month</span>
+                        <h3 class="kpi-value" id="kpiTotalSpent">₹0.00</h3>
+                        <span class="kpi-meta" id="kpiMonthMeta">Current Month</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card card-info">
+                    <div class="kpi-icon-wrapper"><span class="kpi-icon">🧾</span></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Total Transactions</span>
+                        <h3 class="kpi-value" id="kpiTxnCount">0</h3>
+                        <span class="kpi-meta" id="kpiAvgMeta">Avg: ₹0.00 / txn</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card card-success" id="kpiBudgetCard">
+                    <div class="kpi-icon-wrapper"><span class="kpi-icon">🎯</span></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Remaining Budget</span>
+                        <h3 class="kpi-value" id="kpiBudgetRemaining">₹0.00</h3>
+                        <span class="kpi-meta" id="kpiBudgetMeta">Budget: ₹0.00</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card card-purple">
+                    <div class="kpi-icon-wrapper"><span class="kpi-icon">⚡</span></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Highest Expense</span>
+                        <h3 class="kpi-value" id="kpiHighestAmt">₹0.00</h3>
+                        <span class="kpi-meta text-truncate" id="kpiHighestDesc">No records</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budget Progress Bar -->
+            <div class="card budget-progress-card" id="budgetProgressSection">
+                <div class="budget-progress-header">
+                    <div class="budget-info">
+                        <h4>Monthly Budget Progress</h4>
+                        <p class="text-muted" id="budgetProgressText">Tracking your spending limit.</p>
+                    </div>
+                    <div id="budgetBadgeWrap"></div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="budgetProgressBar" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <div class="card chart-card">
+                    <div class="chart-header">
+                        <h3>Category Spending Breakdown</h3>
+                        <span class="text-muted" id="chartMonthLabel">Current Month</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="categoryChart" height="260"></canvas>
+                    </div>
+                </div>
+
+                <div class="card chart-card">
+                    <div class="chart-header">
+                        <h3>Daily Spending Trend</h3>
+                        <span class="text-muted">Daily flow</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="trendChart" height="260"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions Table -->
+            <div class="card table-card mt-4">
+                <div class="table-card-header">
+                    <h3>Recent Transactions</h3>
+                    <a href="expenses.html" class="btn btn-ghost btn-sm">View All Expenses →</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th class="text-right">Amount</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentExpensesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = AppStorage.getCurrentUser();
+            if (user) {
+                document.getElementById('sidebarUserName').textContent = user.name;
+                document.getElementById('sidebarUserEmail').textContent = user.email;
+                document.getElementById('sidebarAvatar').textContent = user.name.charAt(0).toUpperCase();
+                document.getElementById('greetingName').textContent = user.name;
+            }
+
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            const year = now.getFullYear();
+
+            const analytics = AppStorage.getMonthlyAnalytics(month, year);
+
+            // Populate KPIs
+            document.getElementById('kpiTotalSpent').textContent = `₹${analytics.totalSpent.toFixed(2)}`;
+            document.getElementById('kpiMonthMeta').textContent = `For Month: ${month}/${year}`;
+            document.getElementById('kpiTxnCount').textContent = analytics.transactionCount;
+            document.getElementById('kpiAvgMeta').textContent = `Avg: ₹${analytics.averageTransaction.toFixed(2)} / txn`;
+
+            if (analytics.budgetAmount > 0) {
+                document.getElementById('kpiBudgetRemaining').textContent = `₹${analytics.remainingBudget.toFixed(2)}`;
+                document.getElementById('kpiBudgetMeta').textContent = `Budget: ₹${analytics.budgetAmount.toFixed(2)}`;
+                document.getElementById('budgetProgressText').innerHTML = `You have spent <strong>${analytics.percentageUsed.toFixed(1)}%</strong> of your ₹${analytics.budgetAmount.toFixed(2)} budget.`;
+                
+                const bar = document.getElementById('budgetProgressBar');
+                bar.style.width = `${analytics.percentageUsed}%`;
+                if (analytics.statusLevel === 'EXCEEDED') {
+                    bar.className = 'progress-bar-fill bg-danger';
+                    document.getElementById('budgetBadgeWrap').innerHTML = '<span class="status-badge status-danger">Over Budget</span>';
+                } else if (analytics.statusLevel === 'WARNING') {
+                    bar.className = 'progress-bar-fill bg-warning';
+                    document.getElementById('budgetBadgeWrap').innerHTML = '<span class="status-badge status-warning">Near Limit (80%+)</span>';
+                } else {
+                    bar.className = 'progress-bar-fill bg-success';
+                    document.getElementById('budgetBadgeWrap').innerHTML = '<span class="status-badge status-success">On Track</span>';
+                }
+            } else {
+                document.getElementById('kpiBudgetRemaining').textContent = 'No budget set';
+                document.getElementById('kpiBudgetMeta').innerHTML = '<a href="budget.html" class="text-link">Set a budget →</a>';
+                document.getElementById('budgetProgressSection').style.display = 'none';
+            }
+
+            if (analytics.highestExpense) {
+                document.getElementById('kpiHighestAmt').textContent = `₹${analytics.highestExpense.amount.toFixed(2)}`;
+                document.getElementById('kpiHighestDesc').textContent = analytics.highestExpense.description;
+            }
+
+            // Category Chart
+            const catLabels = [];
+            const catData = [];
+            const catColors = [];
+            for (const [cat, val] of Object.entries(analytics.categoryTotals)) {
+                if (val > 0) {
+                    catLabels.push(cat);
+                    catData.push(val);
+                    catColors.push(AppStorage.CATEGORY_COLORS[cat] || '#64748b');
+                }
+            }
+
+            new Chart(document.getElementById('categoryChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: catLabels,
+                    datasets: [{ data: catData, backgroundColor: catColors, borderWidth: 2, borderColor: '#ffffff' }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } },
+                    cutout: '68%'
+                }
+            });
+
+            // Trend Chart
+            const trendLabels = Object.keys(analytics.dailyTotals);
+            const trendData = Object.values(analytics.dailyTotals);
+
+            new Chart(document.getElementById('trendChart'), {
+                type: 'bar',
+                data: {
+                    labels: trendLabels,
+                    datasets: [{
+                        label: 'Spent (₹)',
+                        data: trendData,
+                        backgroundColor: 'rgba(79, 70, 229, 0.75)',
+                        borderColor: '#4f46e5',
+                        borderWidth: 1.5,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Populate Recent Transactions
+            const recent = analytics.expenses.slice(0, 5);
+            const tbody = document.getElementById('recentExpensesBody');
+            if (recent.length > 0) {
+                tbody.innerHTML = recent.map(exp => `
+                    <tr>
+                        <td class="cell-date"><span class="date-badge">${exp.date}</span></td>
+                        <td class="cell-desc"><strong>${exp.description}</strong></td>
+                        <td><span class="category-badge cat-${exp.category.toLowerCase()}">${exp.category}</span></td>
+                        <td class="text-right cell-amount">₹${parseFloat(exp.amount).toFixed(2)}</td>
+                        <td class="text-center"><a href="edit-expense.html?id=${exp.id}" class="btn-icon-action" title="Edit">✏️</a></td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = `<tr><td colspan="5" class="table-empty"><p>No transactions found.</p></td></tr>`;
+            }
+        });
+    </script>
+</body>
+</html>

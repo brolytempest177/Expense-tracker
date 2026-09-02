@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Reports & Analytics — ExpenseTracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="app-body">
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar" id="appSidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo"><span class="logo-icon">💸</span><span class="brand-name">ExpenseTracker</span></div>
+                <span class="badge-tag badge-subtle">Demo</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="dashboard.html" class="nav-link"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a></li>
+                    <li class="nav-item"><a href="expenses.html" class="nav-link"><span class="nav-icon">💳</span><span class="nav-label">Expenses</span></a></li>
+                    <li class="nav-item"><a href="add-expense.html" class="nav-link"><span class="nav-icon">➕</span><span class="nav-label">Add Expense</span></a></li>
+                    <li class="nav-item"><a href="budget.html" class="nav-link"><span class="nav-icon">🎯</span><span class="nav-label">Monthly Budget</span></a></li>
+                    <li class="nav-item"><a href="reports.html" class="nav-link active"><span class="nav-icon">📈</span><span class="nav-label">Analytics & Reports</span></a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" onclick="AppStorage.logout()" class="btn-logout"><span class="nav-icon">🚪</span><span class="nav-label">Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="app-main">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Financial Analytics & Reports</h1>
+                    <p class="page-subtitle">Detailed breakdown and monthly spending trends analysis.</p>
+                </div>
+                <div class="header-actions no-print">
+                    <button onclick="window.print()" class="btn btn-secondary"><span class="btn-icon">🖨️</span><span>Print Report</span></button>
+                </div>
+            </div>
+
+            <!-- Month / Year Selector -->
+            <div class="card toolbar-card no-print">
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label for="repMonth">Report Month</label>
+                        <select id="repMonth" class="form-select">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="repYear">Report Year</label>
+                        <input type="number" id="repYear" value="2026" min="2020" max="2035" class="form-input">
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPIs -->
+            <div class="kpi-grid">
+                <div class="kpi-card card-primary">
+                    <div class="kpi-icon-wrapper"><span class="kpi-icon">💰</span></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Total Monthly Expenses</span>
+                        <h3 class="kpi-value" id="repTotalSpent">₹0.00</h3>
+                    </div>
+                </div>
+
+                <div class="kpi-card card-info">
+                    <div class="kpi-icon-wrapper"><span class="kpi-icon">🔢</span></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Total Transactions</span>
+                        <h3 class="kpi-value" id="repTxnCount">0</h3>
+                    </div>
+                </div>
+
+                <div class="kpi-card card-purple">
+                    <div class="kpi-icon-wrapper"><span class="kpi-icon">⚡</span></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Highest Expense</span>
+                        <h3 class="kpi-value" id="repHighestAmt">₹0.00</h3>
+                    </div>
+                </div>
+
+                <div class="kpi-card card-success">
+                    <div class="kpi-icon-wrapper"><span class="kpi-icon">📊</span></div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Average Spending / Txn</span>
+                        <h3 class="kpi-value" id="repAvgSpent">₹0.00</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="card chart-card">
+                    <div class="chart-header">
+                        <h3>Category Distribution</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="repCategoryChart" height="260"></canvas>
+                    </div>
+                </div>
+
+                <div class="card chart-card">
+                    <div class="chart-header">
+                        <h3>Daily Spending Timeline</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="repTrendChart" height="260"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Breakdown Table -->
+            <div class="card table-card mt-4">
+                <div class="table-card-header">
+                    <h3>Category-Wise Spending Breakdown</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th class="text-right">Total Amount</th>
+                                <th class="text-right">% of Total</th>
+                                <th>Spending Intensity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoryTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script>
+        let catChartInstance = null;
+        let trendChartInstance = null;
+
+        const now = new Date();
+        document.getElementById('repMonth').value = now.getMonth() + 1;
+        document.getElementById('repYear').value = now.getFullYear();
+
+        function renderReports() {
+            const m = parseInt(document.getElementById('repMonth').value);
+            const y = parseInt(document.getElementById('repYear').value);
+            const analytics = AppStorage.getMonthlyAnalytics(m, y);
+
+            document.getElementById('repTotalSpent').textContent = `₹${analytics.totalSpent.toFixed(2)}`;
+            document.getElementById('repTxnCount').textContent = analytics.transactionCount;
+            document.getElementById('repHighestAmt').textContent = analytics.highestExpense ? `₹${analytics.highestExpense.amount.toFixed(2)}` : '₹0.00';
+            document.getElementById('repAvgSpent').textContent = `₹${analytics.averageTransaction.toFixed(2)}`;
+
+            // Category Table
+            const tbody = document.getElementById('categoryTableBody');
+            const rows = [];
+            const catLabels = [];
+            const catData = [];
+            const catColors = [];
+
+            for (const [cat, val] of Object.entries(analytics.categoryTotals)) {
+                const pct = analytics.totalSpent > 0 ? (val / analytics.totalSpent) * 100 : 0;
+                if (val > 0) {
+                    catLabels.push(cat);
+                    catData.push(val);
+                    catColors.push(AppStorage.CATEGORY_COLORS[cat] || '#64748b');
+                }
+                rows.push(`
+                    <tr>
+                        <td><span class="category-badge cat-${cat.toLowerCase()}">${cat}</span></td>
+                        <td class="text-right font-medium">₹${val.toFixed(2)}</td>
+                        <td class="text-right font-medium">${pct.toFixed(1)}%</td>
+                        <td>
+                            <div class="progress-bar-container progress-bar-sm">
+                                <div class="progress-bar-fill" style="width: ${pct}%;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            }
+            tbody.innerHTML = rows.join('');
+
+            // Category Chart
+            if (catChartInstance) catChartInstance.destroy();
+            catChartInstance = new Chart(document.getElementById('repCategoryChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: catLabels,
+                    datasets: [{ data: catData, backgroundColor: catColors, borderWidth: 2, borderColor: '#ffffff' }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } },
+                    cutout: '68%'
+                }
+            });
+
+            // Trend Chart
+            if (trendChartInstance) trendChartInstance.destroy();
+            trendChartInstance = new Chart(document.getElementById('repTrendChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(analytics.dailyTotals),
+                    datasets: [{
+                        label: 'Spent (₹)',
+                        data: Object.values(analytics.dailyTotals),
+                        backgroundColor: 'rgba(79, 70, 229, 0.75)',
+                        borderColor: '#4f46e5',
+                        borderWidth: 1.5,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        document.getElementById('repMonth').addEventListener('change', renderReports);
+        document.getElementById('repYear').addEventListener('change', renderReports);
+        document.addEventListener('DOMContentLoaded', renderReports);
+    </script>
+</body>
+</html>

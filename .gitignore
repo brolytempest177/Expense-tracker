@@ -1,0 +1,34 @@
+# Compiled class file
+target/
+*.class
+
+# Log files
+*.log
+
+# Package Files #
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual Machine Crash Logs
+hs_err_pid*
+
+# Firebase credentials (CRITICAL: Never commit service account keys)
+*service-account*.json
+firebase-key.json
+firebase-credentials.json
+src/main/resources/*service-account*.json
+src/main/webapp/WEB-INF/*service-account*.json
+
+# IDE / Editor specific files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.DS_Store
+Thumbs.db

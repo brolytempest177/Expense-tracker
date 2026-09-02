@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Management — ExpenseTracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="app-body">
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar" id="appSidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo"><span class="logo-icon">💸</span><span class="brand-name">ExpenseTracker</span></div>
+                <span class="badge-tag badge-subtle">Demo</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="dashboard.html" class="nav-link"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a></li>
+                    <li class="nav-item"><a href="expenses.html" class="nav-link"><span class="nav-icon">💳</span><span class="nav-label">Expenses</span></a></li>
+                    <li class="nav-item"><a href="add-expense.html" class="nav-link"><span class="nav-icon">➕</span><span class="nav-label">Add Expense</span></a></li>
+                    <li class="nav-item"><a href="budget.html" class="nav-link active"><span class="nav-icon">🎯</span><span class="nav-label">Monthly Budget</span></a></li>
+                    <li class="nav-item"><a href="reports.html" class="nav-link"><span class="nav-link"><span class="nav-icon">📈</span><span class="nav-label">Analytics & Reports</span></a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" onclick="AppStorage.logout()" class="btn-logout"><span class="nav-icon">🚪</span><span class="nav-label">Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="app-main">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Budget Management</h1>
+                    <p class="page-subtitle">Plan and monitor your spending limits for each month.</p>
+                </div>
+            </div>
+
+            <div id="budgetAlert"></div>
+
+            <div class="grid-2-col">
+                <!-- Card 1: Form -->
+                <div class="card form-card">
+                    <div class="card-header-styled">
+                        <h3>🎯 Set Monthly Budget</h3>
+                        <p class="text-muted">Define your maximum expenditure target for this month.</p>
+                    </div>
+
+                    <form id="budgetForm" class="mt-3">
+                        <div class="form-group">
+                            <label for="month">Month & Year</label>
+                            <div class="form-grid-2">
+                                <select id="month" class="form-select">
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                                <input type="number" id="year" value="2026" min="2020" max="2035" class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="amount">Budget Amount (₹) <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">₹</span>
+                                <input type="number" id="amount" step="0.01" min="0.01" placeholder="e.g. 25000.00" required>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary"><span>Save Budget</span></button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Card 2: Overview -->
+                <div class="card status-overview-card">
+                    <div class="card-header-styled">
+                        <h3>📊 Spending vs Target</h3>
+                        <p class="text-muted">Live overview of your spending status.</p>
+                    </div>
+
+                    <div class="budget-metrics-list mt-3">
+                        <div class="metric-row"><span class="metric-title">Allocated Budget:</span><span class="metric-val" id="dispBudget">₹0.00</span></div>
+                        <div class="metric-row"><span class="metric-title">Total Spent:</span><span class="metric-val stat-danger" id="dispSpent">₹0.00</span></div>
+                        <div class="metric-row"><span class="metric-title">Remaining Balance:</span><span class="metric-val" id="dispRemaining">₹0.00</span></div>
+                        <div class="metric-row"><span class="metric-title">Budget Used:</span><span class="metric-val" id="dispPct">0.0%</span></div>
+                    </div>
+
+                    <div class="progress-bar-container mt-4">
+                        <div class="progress-bar-fill" id="budgetBar" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script>
+        const now = new Date();
+        document.getElementById('month').value = now.getMonth() + 1;
+        document.getElementById('year').value = now.getFullYear();
+
+        function refreshBudgetStatus() {
+            const m = parseInt(document.getElementById('month').value);
+            const y = parseInt(document.getElementById('year').value);
+            const analytics = AppStorage.getMonthlyAnalytics(m, y);
+
+            document.getElementById('amount').value = analytics.budgetAmount > 0 ? analytics.budgetAmount : '';
+            document.getElementById('dispBudget').textContent = `₹${analytics.budgetAmount.toFixed(2)}`;
+            document.getElementById('dispSpent').textContent = `₹${analytics.totalSpent.toFixed(2)}`;
+            document.getElementById('dispRemaining').textContent = `₹${analytics.remainingBudget.toFixed(2)}`;
+            document.getElementById('dispPct').textContent = `${analytics.percentageUsed.toFixed(1)}%`;
+
+            const bar = document.getElementById('budgetBar');
+            bar.style.width = `${analytics.percentageUsed}%`;
+            if (analytics.statusLevel === 'EXCEEDED') bar.className = 'progress-bar-fill bg-danger';
+            else if (analytics.statusLevel === 'WARNING') bar.className = 'progress-bar-fill bg-warning';
+            else bar.className = 'progress-bar-fill bg-success';
+        }
+
+        document.getElementById('month').addEventListener('change', refreshBudgetStatus);
+        document.getElementById('year').addEventListener('change', refreshBudgetStatus);
+
+        document.getElementById('budgetForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const m = parseInt(document.getElementById('month').value);
+            const y = parseInt(document.getElementById('year').value);
+            const amt = parseFloat(document.getElementById('amount').value);
+
+            AppStorage.setBudget(m, y, amt);
+            document.getElementById('budgetAlert').innerHTML = `
+                <div class="alert alert-success">
+                    <span class="alert-icon">✅</span>
+                    <span>Monthly budget updated successfully!</span>
+                </div>
+            `;
+            refreshBudgetStatus();
+        });
+
+        document.addEventListener('DOMContentLoaded', refreshBudgetStatus);
+    </script>
+</body>
+</html>
