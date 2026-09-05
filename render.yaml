@@ -1,10 +1,8 @@
 services:
   - type: web
     name: expense-tracker
-    runtime: java
+    runtime: docker
     plan: free
-    buildCommand: mvn package -DskipTests
-    startCommand: java -jar target/dependency/webapp-runner.jar target/*.war
     envVars:
       - key: MYSQL_URL
         fromDatabase:

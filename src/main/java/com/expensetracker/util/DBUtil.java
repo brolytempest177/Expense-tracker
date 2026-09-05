@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 public class DBUtil {
     private static final Logger LOGGER = Logger.getLogger(DBUtil.class.getName());
 
-    private static final String DEFAULT_URL = "jdbc:mysql://localhost:3306/expense_tracker_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&createDatabaseIfNotExist=true&characterEncoding=UTF-8";
+    private static final String DEFAULT_URL = "jdbc:mysql://localhost:3306/expense_tracker?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&createDatabaseIfNotExist=true&characterEncoding=UTF-8";
     private static final String DEFAULT_USER = "root";
     private static final String DEFAULT_PASSWORD = "";
     private static final String DEFAULT_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -62,6 +62,10 @@ public class DBUtil {
 
         // Support environment variable and system property overrides
         String url = getSetting("MYSQL_URL", "db.url", props.getProperty("db.url", DEFAULT_URL));
+        // Render provides mysql:// URLs but JDBC needs jdbc:mysql://
+        if (url != null && url.startsWith("mysql://")) {
+            url = "jdbc:" + url;
+        }
         String user = getSetting("MYSQL_USER", "db.user", props.getProperty("db.user", DEFAULT_USER));
         String password = getSetting("MYSQL_PASSWORD", "db.password", props.getProperty("db.password", DEFAULT_PASSWORD));
         String driver = props.getProperty("db.driver", DEFAULT_DRIVER);
