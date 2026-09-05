@@ -1,0 +1,14 @@
+.git
+.agent
+.gemini
+*.md
+*.bat
+02_*
+03_*
+05_*
+06_*
+07_*
+08_*
+target/
+.idea/
+*.iml
