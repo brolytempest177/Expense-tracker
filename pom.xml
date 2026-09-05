@@ -9,7 +9,7 @@
     <packaging>war</packaging>
 
     <name>Java Expense Tracker</name>
-    <description>Full-Stack Expense Tracker Web Application using Java Servlets, JSP, and Firebase Firestore</description>
+    <description>Full-Stack Expense Tracker Web Application using Java Servlets, JSP, and MySQL</description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -42,18 +42,18 @@
             <version>1.2</version>
         </dependency>
 
-        <!-- Firebase Admin SDK -->
+        <!-- MySQL Connector/J -->
         <dependency>
-            <groupId>com.google.firebase</groupId>
-            <artifactId>firebase-admin</artifactId>
-            <version>9.2.0</version>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.3.0</version>
         </dependency>
 
-        <!-- Google Cloud Firestore SDK -->
+        <!-- HikariCP Connection Pool -->
         <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-firestore</artifactId>
-            <version>3.14.0</version>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.0.1</version>
         </dependency>
 
         <!-- BCrypt for secure password hashing -->
@@ -88,7 +88,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
             </plugin>
-            <!-- Heroku: Extract dependency JARs for webapp-runner -->
+            <!-- Render/Heroku: Extract webapp-runner for embedded Tomcat -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>

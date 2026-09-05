@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: expense-tracker
+    runtime: java
+    plan: free
+    buildCommand: mvn package -DskipTests
+    startCommand: java -jar target/dependency/webapp-runner.jar target/*.war
+    envVars:
+      - key: MYSQL_URL
+        fromDatabase:
+          name: expense-tracker-db
+          property: connectionString
+      - key: MYSQL_USER
+        fromDatabase:
+          name: expense-tracker-db
+          property: user
+      - key: MYSQL_PASSWORD
+        fromDatabase:
+          name: expense-tracker-db
+          property: password
+
+databases:
+  - name: expense-tracker-db
+    plan: free
+    databaseName: expense_tracker
+    ipAllowList: []

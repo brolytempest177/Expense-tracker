@@ -1,23 +1,19 @@
-# 🛡️ 05 — Utilities, Security & Firebase Configuration (`com.expensetracker.util`)
+# 🛡️ 05 — Utilities, Security & Database Configuration (`com.expensetracker.util`)
 
 ## 🎯 Purpose of This Layer
-This folder contains shared cross-cutting utility classes for **Firebase Admin SDK initialization**, **Session state management**, **BCrypt password security**, and **server-side data validation & XSS sanitization**.
+This folder contains shared cross-cutting utility classes for **MySQL Database Connection & Pooling**, **Session State Management**, **BCrypt Password Security**, and **Server-Side Validation & XSS Sanitization**.
 
 ---
 
 ## 📂 Files in This Folder
 
-### 1. `FirebaseConfig.java`
-* **Purpose**: Thread-safe Singleton for Firebase Admin SDK and Cloud Firestore initialization.
-* **Credential Discovery Order**:
-  1. Environment variable `FIREBASE_CONFIG_PATH`
-  2. System property `firebase.config.path`
-  3. Classpath resource `/firebase-service-account.json`
-  4. Local project root `firebase-service-account.json`
+### 1. `DBUtil.java`
+* **Purpose**: Manages MySQL JDBC connection pooling, automated schema creation, and safe resource disposal.
 * **Features**:
-  * Initializes `FirebaseApp` only once with `GoogleCredentials.fromStream()`.
-  * Provides `getFirestore()` returning the active Firestore database instance.
-  * Fails gracefully with detailed setup warnings if credentials are not yet supplied.
+  * **HikariCP Connection Pooling**: Initializes a thread-safe connection pool for maximum performance and low latency.
+  * **Configuration Hierarchy**: Reads from `src/main/resources/db.properties` with support for environment variable overrides (`MYSQL_URL`, `MYSQL_USER`, `MYSQL_PASSWORD`).
+  * **Auto-Schema Initialization**: Automatically runs `CREATE TABLE IF NOT EXISTS` for `users`, `expenses`, and `budgets` on startup so new developers don't have to manually execute scripts.
+  * **Safe Resource Cleanup**: Provides `close(AutoCloseable...)` to prevent database connection and memory leaks.
 
 ---
 
@@ -38,7 +34,7 @@ This folder contains shared cross-cutting utility classes for **Firebase Admin S
 * **Key Methods**:
   * `hashPassword(plainPassword)`: Generates a salted **BCrypt hash** (cost factor 12).
   * `verifyPassword(plainPassword, hashedPassword)`: Uses `BCrypt.checkpw()` to verify passwords in constant time (protecting against timing attacks).
-  * Includes resilient fallback to SHA-256 with salt if BCrypt native binaries are unavailable in minimal environments.
+  * Includes resilient fallback to SHA-256 with salt if BCrypt native binaries are unavailable.
 
 ---
 
@@ -55,5 +51,12 @@ This folder contains shared cross-cutting utility classes for **Firebase Admin S
 ---
 
 ## 🎤 College Viva / Presentation Speaking Points
+
+> **Q: Why use BCrypt for passwords instead of plain MD5 or SHA-256?**  
+> *Answer*: MD5 and plain SHA-256 are fast hash algorithms susceptible to brute-force and rainbow table attacks using modern GPUs. BCrypt includes a configurable work factor (cost) that makes it intentionally slow and automatically generates a unique salt per password, protecting against precomputed table attacks.
+
 > **Q: Why is server-side validation mandatory even when HTML5 client-side validation is present?**  
 > *Answer*: Client-side JavaScript validation can be easily bypassed by disabling JavaScript or sending direct HTTP POST requests via tools like Postman or cURL. Validating on the server ensures data integrity and security at all times.
+
+> **Q: How does `DBUtil` prevent connection leaks?**  
+> *Answer*: All database interactions use Java 7+ **try-with-resources** blocks. This automatically guarantees that `Connection`, `PreparedStatement`, and `ResultSet` are returned to the HikariCP pool when the block exits, even if an unhandled exception occurs.

@@ -58,7 +58,7 @@ public class AuthService {
 
         boolean created = userDAO.createUser(newUser);
         if (!created) {
-            throw new IllegalStateException("Failed to create user account due to a database error. Please verify Firebase connection.");
+            throw new IllegalStateException("Failed to create user account due to a database error. Please verify database connection.");
         }
 
         return newUser;

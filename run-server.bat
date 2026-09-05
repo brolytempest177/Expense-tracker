@@ -7,6 +7,15 @@ if not defined JAVA_HOME (
 )
 set "CATALINA_HOME=%~dp0..\.tools\apache-tomcat-9.0.121"
 set "CATALINA_BASE=%~dp0..\.tools\apache-tomcat-9.0.121"
+
+if exist "%~dp0target\expense-tracker.war" (
+    echo Deploying latest build to Tomcat...
+    if exist "%CATALINA_BASE%\webapps\expense-tracker" rmdir /s /q "%CATALINA_BASE%\webapps\expense-tracker" 2>nul
+    if exist "%CATALINA_BASE%\webapps\ROOT" rmdir /s /q "%CATALINA_BASE%\webapps\ROOT" 2>nul
+    copy /y "%~dp0target\expense-tracker.war" "%CATALINA_BASE%\webapps\expense-tracker.war" >nul
+    copy /y "%~dp0target\expense-tracker.war" "%CATALINA_BASE%\webapps\ROOT.war" >nul
+)
+
 call "%CATALINA_HOME%\bin\catalina.bat" start
 echo.
 echo ===================================================
