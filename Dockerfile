@@ -7,7 +7,8 @@ RUN mvn package -DskipTests
 
 FROM eclipse-temurin:11-jre
 WORKDIR /app
-COPY --from=build /app/target/dependency/webapp-runner.jar .
-COPY --from=build /app/target/*.war ./app.war
+# Download webapp-runner directly
+RUN curl -L -o webapp-runner.jar https://repo1.maven.org/maven2/com/heroku/webapp-runner/9.0.68/webapp-runner-9.0.68.jar
+COPY --from=build /app/target/expense-tracker.war ./app.war
 EXPOSE 8080
 CMD ["java", "-jar", "webapp-runner.jar", "--port", "8080", "app.war"]
