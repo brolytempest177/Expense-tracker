@@ -7,13 +7,9 @@ RUN mvn package -DskipTests
 
 FROM eclipse-temurin:11-jre
 WORKDIR /app
-# Install curl and download webapp-runner
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl && \
-    rm -rf /var/lib/apt/lists/* && \
-    curl -fSL --retry 3 -o /app/webapp-runner.jar \
-      "https://repo1.maven.org/maven2/com/heroku/webapp-runner/9.0.75/webapp-runner-9.0.75.jar" && \
-    file /app/webapp-runner.jar
+# Download webapp-runner (correct version format: 9.0.70.0)
+RUN curl -fSL --retry 3 -o /app/webapp-runner.jar \
+      "https://repo1.maven.org/maven2/com/heroku/webapp-runner/9.0.70.0/webapp-runner-9.0.70.0.jar"
 COPY --from=build /app/target/expense-tracker.war ./app.war
 EXPOSE 8080
 CMD ["java", "-jar", "webapp-runner.jar", "--port", "8080", "app.war"]
