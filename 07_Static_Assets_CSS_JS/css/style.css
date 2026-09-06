@@ -1,20 +1,17 @@
 /* ==========================================================================
-   Java Expense Tracker — High-Craft Financial Interface Design System
-   Polished with Impeccable Craft (Production-Grade UI Refinement)
+   ExpenseTracker — custom UI
    ========================================================================== */
 
 :root {
-    /* Brand Colors (Deep Emerald Teal & Sky Precision) */
-    --primary: #0f766e;
-    --primary-hover: #115e59;
-    --primary-light: #f0fdfa;
-    --primary-border: #99f6e4;
-    --primary-gradient: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+    --primary-border: #bfdbfe;
     
-    --accent: #0284c7;
-    --accent-hover: #0369a1;
-    --accent-light: #f0f9ff;
-    --accent-border: #bae6fd;
+    --accent: #7c3aed;
+    --accent-hover: #6d28d9;
+    --accent-light: #f5f3ff;
+    --accent-border: #c4b5fd;
     
     /* Semantic Status Colors (WCAG AA Compliant Contrast) */
     --success: #059669;
@@ -41,11 +38,11 @@
     --bg-main: #f8fafc;
     --bg-card: #ffffff;
     --bg-muted: #f1f5f9;
-    --sidebar-bg: #090d16;
+    --sidebar-bg: #1e293b;
     --sidebar-text: #94a3b8;
     --sidebar-active: #ffffff;
-    --sidebar-active-bg: rgba(15, 118, 110, 0.22);
-    --sidebar-border: rgba(255, 255, 255, 0.08);
+    --sidebar-active-bg: rgba(37, 99, 235, 0.25);
+    --sidebar-border: rgba(255, 255, 255, 0.06);
     
     --text-main: #0f172a;
     --text-secondary: #334155;
@@ -54,18 +51,17 @@
     
     --border-color: #e2e8f0;
     --border-subtle: #f1f5f9;
-    --border-focus: #0f766e;
+    --border-focus: #2563eb;
     
-    /* Shadows & Radii */
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 14px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
     --radius-full: 9999px;
     
-    --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
-    --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
-    --shadow-lg: 0 12px 20px -4px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
-    --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 4px 14px -2px rgba(15, 23, 42, 0.03);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.1);
+    --shadow-card: 0 1px 4px rgba(0,0,0,0.05);
 }
 
 /* Reset & Global */
@@ -81,10 +77,10 @@
 }
 
 body {
-    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: var(--bg-main);
     color: var(--text-main);
-    line-height: 1.55;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     caret-color: var(--primary);
@@ -208,7 +204,7 @@ td.amount {
 }
 
 .sidebar-brand {
-    padding: 1.5rem 1.5rem 1.25rem;
+    padding: 1.25rem 1.25rem 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -218,18 +214,18 @@ td.amount {
 .brand-logo {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.6rem;
 }
 
 .logo-icon {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
 }
 
 .brand-name {
-    font-size: 1.2rem;
-    font-weight: 800;
+    font-size: 1.05rem;
+    font-weight: 700;
     color: #ffffff;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
 }
 
 .badge-tag {
@@ -279,8 +275,8 @@ td.amount {
 
 .nav-link.active {
     color: #ffffff;
-    background: var(--primary-gradient);
-    box-shadow: 0 4px 14px -2px rgba(15, 118, 110, 0.4);
+    background: var(--primary);
+    border-radius: var(--radius-sm);
 }
 
 .nav-icon {
@@ -371,11 +367,11 @@ td.amount {
 }
 
 .page-title {
-    font-size: 1.75rem;
-    font-weight: 800;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: var(--text-main);
-    letter-spacing: -0.03em;
-    line-height: 1.25;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
 }
 
 .page-subtitle {
@@ -390,15 +386,10 @@ td.amount {
 
 .card {
     background: var(--bg-card);
-    border-radius: var(--radius-lg);
+    border-radius: 6px;
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-card);
     padding: 1.5rem;
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
-}
-
-.card:hover {
-    border-color: #cbd5e1;
 }
 
 .kpi-grid {
@@ -411,7 +402,7 @@ td.amount {
 .kpi-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
+    border-radius: 6px;
     padding: 1.35rem 1.5rem;
     display: flex;
     align-items: flex-start;
@@ -419,26 +410,23 @@ td.amount {
     box-shadow: var(--shadow-card);
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    transition: box-shadow 0.15s ease;
 }
 
 .kpi-card:hover {
-    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
-    border-color: #cbd5e1;
 }
 
 .kpi-icon-wrapper {
-    width: 46px;
-    height: 46px;
-    border-radius: var(--radius-md);
+    width: 42px;
+    height: 42px;
+    border-radius: 6px;
     background: var(--bg-muted);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     flex-shrink: 0;
-    border: 1px solid var(--border-subtle);
 }
 
 .kpi-card.card-primary .kpi-icon-wrapper {
@@ -1000,7 +988,7 @@ input:hover, select:hover, textarea:hover {
 input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
 }
 
 .form-textarea {
@@ -1033,16 +1021,13 @@ input:focus, select:focus, textarea:focus {
 }
 
 .btn-primary {
-    background: var(--primary-gradient);
+    background: var(--primary);
     color: #ffffff;
-    box-shadow: 0 2px 8px rgba(15, 118, 110, 0.25);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #115e59 0%, #0f766e 100%);
+    background: var(--primary-hover);
     color: #ffffff;
-    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.35);
-    transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -1119,7 +1104,7 @@ input:focus, select:focus, textarea:focus {
    ========================================================================== */
 
 .auth-page {
-    background: radial-gradient(circle at 50% 20%, #1e293b 0%, #090d16 100%);
+    background: #f1f5f9;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -1134,9 +1119,9 @@ input:focus, select:focus, textarea:focus {
 
 .auth-card {
     background: #ffffff;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.35);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
     padding: 2.5rem 2.25rem;
 }
 

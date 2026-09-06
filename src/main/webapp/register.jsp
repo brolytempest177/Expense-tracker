@@ -8,7 +8,7 @@
     <title>Create Account — ExpenseTracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body class="auth-page">
@@ -16,10 +16,10 @@
         <div class="auth-card">
             <div class="auth-header">
                 <div class="brand-logo">
-                    <span class="logo-icon">💸</span>
-                    <h2>ExpenseTracker</h2>
+                    <span class="logo-icon">💰</span>
+                    <h2 style="font-size:1.3rem">ExpenseTracker</h2>
                 </div>
-                <p class="auth-subtitle">Join us today to manage and budget your expenses effortlessly.</p>
+                <p class="auth-subtitle">Create your free account</p>
             </div>
 
             <!-- Error Alert -->
