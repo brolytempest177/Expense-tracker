@@ -98,6 +98,11 @@ public class DBUtil {
     }
 
     private static String getSetting(String envName, String propName, String defaultValue) {
+        // Use db.properties value first (already set for TiDB Cloud)
+        // Only fall back to env vars if db.properties value is empty or not set
+        if (defaultValue != null && !defaultValue.trim().isEmpty()) {
+            return defaultValue;
+        }
         String envVal = System.getenv(envName);
         if (envVal != null && !envVal.trim().isEmpty()) {
             return envVal;
