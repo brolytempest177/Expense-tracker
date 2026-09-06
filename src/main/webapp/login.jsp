@@ -8,7 +8,7 @@
     <title>Login — ExpenseTracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body class="auth-page">
@@ -16,24 +16,22 @@
         <div class="auth-card">
             <div class="auth-header">
                 <div class="brand-logo">
-                    <span class="logo-icon">🌱</span>
+                    <span class="logo-icon">⚡</span>
                     <span class="brand-name">ExpenseTracker</span>
                 </div>
                 <h2>Welcome back</h2>
-                <p class="auth-subtitle">Sign in to keep track of your money</p>
+                <p class="auth-subtitle">Sign in to your account</p>
             </div>
 
             <!-- Error and Flash Message Alerts -->
             <c:if test="${not empty errorMessage}">
                 <div class="alert alert-danger">
-                    <span class="alert-icon">⚠️</span>
                     <span><c:out value="${errorMessage}" /></span>
                 </div>
             </c:if>
 
             <c:if test="${not empty sessionScope.FLASH_ERROR}">
                 <div class="alert alert-danger">
-                    <span class="alert-icon">⚠️</span>
                     <span><c:out value="${sessionScope.FLASH_ERROR}" /></span>
                 </div>
                 <c:remove var="FLASH_ERROR" scope="session" />
@@ -41,7 +39,6 @@
 
             <c:if test="${not empty sessionScope.FLASH_SUCCESS}">
                 <div class="alert alert-success">
-                    <span class="alert-icon">✅</span>
                     <span><c:out value="${sessionScope.FLASH_SUCCESS}" /></span>
                 </div>
                 <c:remove var="FLASH_SUCCESS" scope="session" />
@@ -49,7 +46,6 @@
 
             <c:if test="${param.logout eq 'true'}">
                 <div class="alert alert-info">
-                    <span class="alert-icon">ℹ️</span>
                     <span>You have been logged out successfully.</span>
                 </div>
             </c:if>
@@ -73,7 +69,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem">
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.75rem">
                     <span>Sign in</span>
                 </button>
             </form>
