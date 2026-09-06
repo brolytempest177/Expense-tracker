@@ -82,6 +82,41 @@ const AppStorage = {
         window.location.href = 'login.html';
     },
 
+    guestLogin() {
+        this.init();
+        const guest = { id: 'guest_' + Date.now(), name: 'Guest User', email: 'guest@demo.com', password: '', isGuest: true };
+        localStorage.setItem(this.USER_KEY, JSON.stringify(guest));
+        sessionStorage.setItem('ET_LOGGED_IN', 'true');
+
+        // Pre-load demo expenses if empty
+        const existing = this.getExpenses();
+        if (existing.length === 0) {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = now.getMonth() + 1;
+            const mm = String(m).padStart(2, '0');
+            const demoExpenses = [
+                { id: 'demo_1', amount: 450, description: 'Lunch at cafe', category: 'Food', date: `${y}-${mm}-05`, notes: '' },
+                { id: 'demo_2', amount: 180, description: 'Auto fare to office', category: 'Transport', date: `${y}-${mm}-04`, notes: '' },
+                { id: 'demo_3', amount: 2100, description: 'Amazon order', category: 'Shopping', date: `${y}-${mm}-03`, notes: '' },
+                { id: 'demo_4', amount: 649, description: 'Netflix subscription', category: 'Entertainment', date: `${y}-${mm}-02`, notes: '' },
+                { id: 'demo_5', amount: 1850, description: 'Electricity bill', category: 'Bills', date: `${y}-${mm}-01`, notes: '' },
+                { id: 'demo_6', amount: 1200, description: 'Weekly groceries', category: 'Food', date: `${y}-${mm}-06`, notes: '' },
+                { id: 'demo_7', amount: 350, description: 'Movie tickets', category: 'Entertainment', date: `${y}-${mm}-07`, notes: '' },
+                { id: 'demo_8', amount: 900, description: 'Phone recharge', category: 'Bills', date: `${y}-${mm}-03`, notes: '' },
+            ];
+            localStorage.setItem(this.EXPENSES_KEY, JSON.stringify(demoExpenses));
+            this.setBudget(m, y, 15000);
+        }
+
+        return { success: true, user: guest };
+    },
+
+    isGuest() {
+        const user = this.getCurrentUser();
+        return user && user.isGuest === true;
+    },
+
     getExpenses() {
         this.init();
         const raw = localStorage.getItem(this.EXPENSES_KEY);

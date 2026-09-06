@@ -14,8 +14,7 @@
     <div class="app-layout">
         <!-- Mobile Header Bar -->
         <div class="mobile-navbar">
-            <div class="brand-logo">
-                <span class="logo-icon">💸</span>
+            <div class="brand-logo">                    <span class="logo-icon">⚡</span>
                 <span class="brand-name">ExpenseTracker</span>
             </div>
             <button class="mobile-menu-btn" id="mobileMenuToggle">☰</button>
@@ -25,7 +24,7 @@
         <aside class="app-sidebar" id="appSidebar">
             <div class="sidebar-brand">
                 <div class="brand-logo">
-                    <span class="logo-icon">💸</span>
+                    <span class="logo-icon">⚡</span>
                     <span class="brand-name">ExpenseTracker</span>
                 </div>
                 <span class="badge-tag badge-subtle">Demo</span>
@@ -55,6 +54,13 @@
 
         <!-- Main Content -->
         <main class="app-main">
+            <!-- Guest Mode Banner -->
+            <div id="guestBanner" style="display:none; background:rgba(234,179,8,0.1); border:1px solid rgba(234,179,8,0.3); padding:0.75rem 1rem; margin-bottom:1.5rem; border-radius:4px; font-size:0.85rem; color:#facc15; display:flex; align-items:center; gap:0.5rem;">
+                <span>👤</span>
+                <span>You're browsing as a <strong>Guest</strong>. Data won't be saved after you leave.</span>
+                <a href="register.html" style="margin-left:auto; color:var(--primary); font-weight:600; font-size:0.8rem;">Create account →</a>
+            </div>
+
             <div class="page-header">
                 <div>
                     <h1 class="page-title">Financial Dashboard</h1>
@@ -174,6 +180,11 @@
                 document.getElementById('sidebarUserEmail').textContent = user.email;
                 document.getElementById('sidebarAvatar').textContent = user.name.charAt(0).toUpperCase();
                 document.getElementById('greetingName').textContent = user.name;
+            }
+
+            // Show guest banner
+            if (AppStorage.isGuest()) {
+                document.getElementById('guestBanner').style.display = 'flex';
             }
 
             const now = new Date();
