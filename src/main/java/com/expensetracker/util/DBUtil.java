@@ -87,8 +87,12 @@ public class DBUtil {
             config.setMaxLifetime(Long.parseLong(props.getProperty("hikari.maxLifetime", "1800000")));
             config.setPoolName("ExpenseTrackerPool");
 
+            // Log connection info (mask password)
+            String maskedUrl = url.replaceAll("[?&]password=[^&]*", "");
+            LOGGER.info("Connecting to: " + maskedUrl);
+            LOGGER.info("Username: " + user);
             dataSource = new HikariDataSource(config);
-            LOGGER.info("HikariCP connection pool initialized successfully for " + url);
+            LOGGER.info("HikariCP connection pool initialized successfully!");
 
             // Initialize database tables if needed
             initializeSchema();
