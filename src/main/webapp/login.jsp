@@ -74,6 +74,12 @@
                 </button>
             </form>
 
+            <div style="text-align:center; margin-top:1.25rem; padding-top:1.25rem; border-top:1px solid var(--border-color);">
+                <a href="${pageContext.request.contextPath}/guest-login" style="display:block; width:100%; padding:0.65rem 1rem; font-size:0.88rem; font-weight:600; font-family:inherit; border-radius:4px; border:1px solid #eab308; background:transparent; color:#eab308; cursor:pointer; text-align:center; text-decoration:none;">
+                    👤 Continue as Guest
+                </a>
+            </div>
+
             <div class="auth-footer">
                 <p>New here? <a href="${pageContext.request.contextPath}/register" class="auth-link">Create an account</a></p>
             </div>

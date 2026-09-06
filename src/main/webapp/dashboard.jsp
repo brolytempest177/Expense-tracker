@@ -7,6 +7,15 @@
 <%@ include file="/includes/sidebar.jsp" %>
 
 <main class="app-main">
+    <!-- Guest Mode Banner -->
+    <c:if test="${sessionScope.IS_GUEST eq true}">
+        <div style="background:rgba(234,179,8,0.1); border:1px solid rgba(234,179,8,0.3); padding:0.75rem 1rem; margin-bottom:1.5rem; border-radius:4px; font-size:0.85rem; color:#facc15; display:flex; align-items:center; gap:0.5rem;">
+            <span>👤</span>
+            <span>You're browsing as a <strong>Guest</strong>. Data won't be saved after you leave.</span>
+            <a href="${pageContext.request.contextPath}/register" style="margin-left:auto; color:#eab308; font-weight:600; font-size:0.8rem; text-decoration:none;">Create account →</a>
+        </div>
+    </c:if>
+
     <div class="page-header">
         <div>
             <h1 class="page-title">Financial Dashboard</h1>
