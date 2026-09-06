@@ -22,6 +22,7 @@ public class AuthFilter implements Filter {
             "/login.jsp",
             "/register",
             "/register.jsp",
+            "/guest-login",
             "/logout",
             "/css/",
             "/js/",
