@@ -8,7 +8,7 @@
     <title>Create Account — ExpenseTracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body class="auth-page">
@@ -16,10 +16,11 @@
         <div class="auth-card">
             <div class="auth-header">
                 <div class="brand-logo">
-                    <span class="logo-icon">💰</span>
-                    <h2 style="font-size:1.3rem">ExpenseTracker</h2>
+                    <span class="logo-icon">🌱</span>
+                    <span class="brand-name">ExpenseTracker</span>
                 </div>
-                <p class="auth-subtitle">Create your free account</p>
+                <h2>Create your account</h2>
+                <p class="auth-subtitle">Start managing your money today</p>
             </div>
 
             <!-- Error Alert -->
@@ -41,7 +42,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email Address</label>
+                    <label for="email">Email</label>
                     <div class="input-wrapper">
                         <span class="input-icon">✉️</span>
                         <input type="email" id="email" name="email" value="<c:out value='${email}' />" 
@@ -52,7 +53,7 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="input-wrapper">
-                        <span class="input-icon">🔒</span>
+                        <span class="input-icon">🔑</span>
                         <input type="password" id="password" name="password" 
                                placeholder="Minimum 6 characters" required minlength="6" autocomplete="new-password">
                     </div>
@@ -61,20 +62,19 @@
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
                     <div class="input-wrapper">
-                        <span class="input-icon">🔒</span>
+                        <span class="input-icon">🔑</span>
                         <input type="password" id="confirmPassword" name="confirmPassword" 
                                placeholder="Re-enter password" required minlength="6" autocomplete="new-password">
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block">
-                    <span>Create Account</span>
-                    <span class="btn-arrow">→</span>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem">
+                    <span>Create account</span>
                 </button>
             </form>
 
             <div class="auth-footer">
-                <p>Already have an account? <a href="${pageContext.request.contextPath}/login" class="auth-link">Sign In</a></p>
+                <p>Already have an account? <a href="${pageContext.request.contextPath}/login" class="auth-link">Sign in</a></p>
             </div>
         </div>
     </div>

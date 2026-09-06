@@ -8,7 +8,7 @@
     <title>Login — ExpenseTracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body class="auth-page">
@@ -16,10 +16,11 @@
         <div class="auth-card">
             <div class="auth-header">
                 <div class="brand-logo">
-                    <span class="logo-icon">💰</span>
-                    <h2 style="font-size:1.3rem">ExpenseTracker</h2>
+                    <span class="logo-icon">🌱</span>
+                    <span class="brand-name">ExpenseTracker</span>
                 </div>
-                <p class="auth-subtitle">Sign in to your account</p>
+                <h2>Welcome back</h2>
+                <p class="auth-subtitle">Sign in to keep track of your money</p>
             </div>
 
             <!-- Error and Flash Message Alerts -->
@@ -55,7 +56,7 @@
 
             <form action="${pageContext.request.contextPath}/login" method="POST" class="auth-form" id="loginForm">
                 <div class="form-group">
-                    <label for="email">Email Address</label>
+                    <label for="email">Email</label>
                     <div class="input-wrapper">
                         <span class="input-icon">✉️</span>
                         <input type="email" id="email" name="email" value="<c:out value='${enteredEmail}' />" 
@@ -66,20 +67,19 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="input-wrapper">
-                        <span class="input-icon">🔒</span>
+                        <span class="input-icon">🔑</span>
                         <input type="password" id="password" name="password" 
                                placeholder="••••••••" required autocomplete="current-password">
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block">
-                    <span>Sign In</span>
-                    <span class="btn-arrow">→</span>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem">
+                    <span>Sign in</span>
                 </button>
             </form>
 
             <div class="auth-footer">
-                <p>Don't have an account? <a href="${pageContext.request.contextPath}/register" class="auth-link">Create account</a></p>
+                <p>New here? <a href="${pageContext.request.contextPath}/register" class="auth-link">Create an account</a></p>
             </div>
         </div>
     </div>

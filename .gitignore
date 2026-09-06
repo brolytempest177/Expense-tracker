@@ -32,3 +32,4 @@ src/main/webapp/WEB-INF/*service-account*.json
 .classpath
 .DS_Store
 Thumbs.db
+preview_temp/
